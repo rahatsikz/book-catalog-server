@@ -6,6 +6,11 @@ const getAllBooks = async () => {
   return result;
 };
 
+const getLastTenBooks = async () => {
+  const result = await Book.find({}).sort({ createdAt: -1 }).limit(10);
+  return result;
+};
+
 const addBook = async (payload: IBook) => {
   const result = await Book.create(payload);
   return result;
@@ -13,5 +18,6 @@ const addBook = async (payload: IBook) => {
 
 export const BookService = {
   getAllBooks,
+  getLastTenBooks,
   addBook,
 };

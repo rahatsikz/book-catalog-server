@@ -15,6 +15,16 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getLastTenBooks = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookService.getLastTenBooks();
+  sendResponse<IBook[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Latest Books retrieved Successfully",
+    data: result,
+  });
+});
+
 const addBook = catchAsync(async (req: Request, res: Response) => {
   const { ...bookinfo } = req.body;
 
@@ -29,5 +39,6 @@ const addBook = catchAsync(async (req: Request, res: Response) => {
 
 export const BookController = {
   getAllBooks,
+  getLastTenBooks,
   addBook,
 };
