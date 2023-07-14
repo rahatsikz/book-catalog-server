@@ -15,6 +15,19 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addBook = catchAsync(async (req: Request, res: Response) => {
+  const { ...bookinfo } = req.body;
+
+  const result = await BookService.addBook(bookinfo);
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book Added Successfully",
+    data: result,
+  });
+});
+
 export const BookController = {
   getAllBooks,
+  addBook,
 };
