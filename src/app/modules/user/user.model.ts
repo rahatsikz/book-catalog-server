@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import { IUser, UserModel } from "./user.interface";
+import { IUser, IUserMethods, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../../config";
 
-const userSchema = new Schema<IUser, UserModel>(
+const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     email: {
       type: String,
@@ -22,6 +22,17 @@ const userSchema = new Schema<IUser, UserModel>(
     },
   }
 );
+
+userSchema.methods.isUserExists = async function (email: string) {
+  return await User.findOne({ email }, { _id: 1, email: 1, password: 1 });
+};
+
+userSchema.methods.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+) {
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
 
 userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, Number(config.salt_rounds));

@@ -5,4 +5,12 @@ export type IUser = {
   password: string;
 };
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+export interface IUserMethods {
+  isUserExists(phoneNumber: string): Promise<Partial<IUser> | null>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>;
+}
+
+export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>;
