@@ -6,6 +6,7 @@ export type IBook = {
   genre: string;
   publicationDate: string;
   uploader?: string;
+  comments?: string[];
 };
 
 export type BookModel = Model<IBook, Record<string, unknown>>;

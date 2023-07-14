@@ -11,8 +11,26 @@ const getLastTenBooks = async () => {
   return result;
 };
 
+const getSingleBook = async (id: string) => {
+  const result = await Book.findById(id);
+  return result;
+};
+
 const addBook = async (payload: IBook) => {
   const result = await Book.create(payload);
+  return result;
+};
+
+const addComment = async (id: string, comment: string) => {
+  const result = await Book.findByIdAndUpdate(
+    id,
+    {
+      $push: { comments: comment },
+    },
+    { new: true }
+  );
+  console.log(result);
+
   return result;
 };
 
@@ -20,4 +38,6 @@ export const BookService = {
   getAllBooks,
   getLastTenBooks,
   addBook,
+  getSingleBook,
+  addComment,
 };

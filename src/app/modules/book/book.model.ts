@@ -23,6 +23,9 @@ const bookSchema = new Schema<IBook, BookModel>(
     uploader: {
       type: String,
     },
+    comments: {
+      type: [String],
+    },
   },
   {
     timestamps: true,
