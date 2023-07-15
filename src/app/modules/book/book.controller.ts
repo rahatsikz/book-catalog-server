@@ -63,10 +63,36 @@ const addComment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const editBook = catchAsync(async (req: Request, res: Response) => {
+  const { ...info } = req.body;
+  const id = req.params.id;
+
+  const result = await BookService.editBook(id, info);
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book Updated Successfully",
+    data: result,
+  });
+});
+
+const deleteBook = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await BookService.deleteBook(id);
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book Deleted Successfully",
+    data: result,
+  });
+});
+
 export const BookController = {
   getAllBooks,
   getLastTenBooks,
   addBook,
   getSingleBook,
   addComment,
+  editBook,
+  deleteBook,
 };

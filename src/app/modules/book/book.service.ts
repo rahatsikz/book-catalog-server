@@ -34,10 +34,22 @@ const addComment = async (id: string, comment: string) => {
   return result;
 };
 
+const editBook = async (id: string, payload: IBook) => {
+  const result = await Book.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
+const deleteBook = async (id: string) => {
+  const result = await Book.findByIdAndDelete(id);
+  return result;
+};
+
 export const BookService = {
   getAllBooks,
   getLastTenBooks,
   addBook,
   getSingleBook,
   addComment,
+  editBook,
+  deleteBook,
 };
