@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { IUser } from "./user.interface";
+import { IRead, IUser } from "./user.interface";
 import { User } from "./user.model";
 
 const createUser = async (payload: IUser): Promise<IUser> => {
@@ -19,6 +19,9 @@ const loginUser = async (payload: IUser) => {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
 
+  // console.log(isUserExists.password);
+  // console.log(password);
+
   if (
     isUserExists.password &&
     !(await user.isPasswordMatched(password, isUserExists.password))
@@ -29,7 +32,7 @@ const loginUser = async (payload: IUser) => {
   return isUserExists;
 };
 
-const addToWishlist = async (id: string, book: string) => {
+const addToWishlist = async (id: string, book: IRead) => {
   const result = await User.findByIdAndUpdate(
     id,
     {
@@ -37,9 +40,34 @@ const addToWishlist = async (id: string, book: string) => {
     },
     { new: true }
   );
+  console.log(result);
+
+  return result;
+};
+
+const addToReadList = async (id: string, payload: string) => {
+  const result = await User.findByIdAndUpdate(
+    id,
+    {
+      $push: { readList: payload },
+    },
+    { new: true }
+  );
   // console.log(result);
 
   return result;
+};
+
+const updateReadlist = async (userID: string, payload: IRead) => {
+  const user = await User.findById(userID);
+  const { id, isComplete } = payload;
+
+  const readlist = user?.readList;
+
+  const myBook = readlist?.find((book) => book.id === id);
+  myBook!.isComplete = true;
+
+  await user?.save();
 };
 
 const getSingleUser = async (id: string) => {
@@ -52,4 +80,6 @@ export const UserService = {
   loginUser,
   addToWishlist,
   getSingleUser,
+  addToReadList,
+  updateReadlist,
 };

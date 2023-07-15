@@ -3,6 +3,17 @@ import { IUser, IUserMethods, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../../config";
 
+const readSchema = new Schema({
+  book: {
+    type: String,
+    required: true,
+  },
+  isComplete: {
+    type: Boolean,
+    required: true,
+  },
+});
+
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     email: {
@@ -18,7 +29,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       type: [String],
     },
     readList: {
-      type: [String],
+      type: [readSchema],
     },
   },
   {

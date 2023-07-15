@@ -47,6 +47,34 @@ const addToWishlist = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addToReadList = catchAsync(async (req: Request, res: Response) => {
+  const { ...payload } = req.body;
+  console.log(payload);
+
+  const id = req.params.id;
+
+  const result = await UserService.addToReadList(id, payload);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book Added to Readlist Successfully",
+    data: result,
+  });
+});
+
+const updateReadlist = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const { ...payload } = req.body;
+  const result = await UserService.updateReadlist(id, payload);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Rating Updated Successfully",
+    data: result,
+  });
+});
+
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -64,4 +92,6 @@ export const UserController = {
   loginUser,
   addToWishlist,
   getSingleUser,
+  addToReadList,
+  updateReadlist,
 };
