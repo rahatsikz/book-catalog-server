@@ -3,6 +3,8 @@ import { Model } from "mongoose";
 export type IUser = {
   email: string;
   password: string;
+  wishlist?: string[];
+  readList?: string[];
 };
 
 export interface IUserMethods {

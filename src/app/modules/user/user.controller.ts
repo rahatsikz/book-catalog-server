@@ -32,7 +32,36 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addToWishlist = catchAsync(async (req: Request, res: Response) => {
+  const book = req.body.book;
+  console.log(book);
+
+  const id = req.params.id;
+
+  const result = await UserService.addToWishlist(id, book);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book Added to Wishlist Successfully",
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.getSingleUser(id);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User retrieved Successfully",
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   loginUser,
+  addToWishlist,
+  getSingleUser,
 };

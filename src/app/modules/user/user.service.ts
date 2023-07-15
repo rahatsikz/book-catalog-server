@@ -29,7 +29,27 @@ const loginUser = async (payload: IUser) => {
   return isUserExists;
 };
 
+const addToWishlist = async (id: string, book: string) => {
+  const result = await User.findByIdAndUpdate(
+    id,
+    {
+      $push: { wishlist: book },
+    },
+    { new: true }
+  );
+  // console.log(result);
+
+  return result;
+};
+
+const getSingleUser = async (id: string) => {
+  const result = await User.findById(id);
+  return result;
+};
+
 export const UserService = {
   createUser,
   loginUser,
+  addToWishlist,
+  getSingleUser,
 };
