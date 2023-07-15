@@ -2,9 +2,14 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { IRead, IUser } from "./user.interface";
 import { User } from "./user.model";
+import config from "../../../config";
+import bcrypt from "bcrypt";
 
 const createUser = async (payload: IUser): Promise<IUser> => {
-  const createdUser = await User.create(payload);
+  let { email, password } = payload;
+  password = await bcrypt.hash(password, Number(config.salt_rounds));
+
+  const createdUser = await User.create({ email, password });
   return createdUser;
 };
 
